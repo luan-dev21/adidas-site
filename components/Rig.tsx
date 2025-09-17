@@ -12,5 +12,4 @@ const Rig = () => {
     state.camera.lookAt(0, 0.7, 0);
   });
 };
-
 export default Rig;
