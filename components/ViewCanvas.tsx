@@ -15,6 +15,7 @@ const ViewCanvas = () => {
       style={{ position: "fixed", inset: 0, overflow: "hidden" }}
       camera={{ position: [0, 0.7, 3], fov: 30 }}
       eventSource={eventSource ?? undefined}
+      eventPrefix="client"
     >
       <View.Port />
       {/* <OrbitControls /> */}
