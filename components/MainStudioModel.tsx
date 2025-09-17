@@ -1,12 +1,14 @@
+import { useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 import * as THREE from "three";
-import React, { useEffect, useRef, useState } from "react";
-import { useGLTF, useTexture } from "@react-three/drei";
-import { useMainStudioTextures } from "@/lib/useTextures";
-import { createMaterials } from "@/lib/material";
-import { studioTextures } from "@/lib/textures";
+import { useGLTF } from "@react-three/drei";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
-import { useRouter } from "next/navigation";
+
+import { useMainStudioTextures } from "@/lib/useTextures";
+import { studioTextures } from "@/lib/textures";
+import { createMaterials } from "@/lib/material";
+
 type GLTFResult = {
   nodes: {
     [name: string]: THREE.Mesh;
