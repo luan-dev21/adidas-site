@@ -6,11 +6,14 @@ import { FirstGrayModel } from "./FirstGrayModel";
 import { FirstSportModel } from "./FirstSportModel";
 import { SecondModel } from "./SecondModel";
 import ThirdModel from "./ThirdModel";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/all";
 
 type Props = {
   shirtType: ShirtType;
 };
 
+gsap.registerPlugin(ScrollTrigger);
 const Scene = ({ shirtType }: Props) => {
   return (
     <main className="min-h-screen">

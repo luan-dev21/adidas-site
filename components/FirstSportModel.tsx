@@ -5,6 +5,8 @@ import { createMaterials } from "@/lib/material";
 import { TextureKey } from "@/lib/textures";
 import { useThree } from "@react-three/fiber";
 import Masking from "./Masking";
+import { useRef } from "react";
+import useFirstAnimation from "@/lib/useFirstAnimation";
 
 type GLTFResult = {
   nodes: {
@@ -16,19 +18,24 @@ export function FirstSportModel() {
     "/models/sport/SportStudio.glb"
   ) as unknown as GLTFResult;
 
-  const { width, height } = useThree((state) => state.viewport);
   const stencil = useMask(1);
+
+  const shirtRef = useRef<THREE.Mesh>(null);
+  const groupRef = useRef<THREE.Group>(null);
+  const maskRef = useRef<THREE.Mesh>(null);
+
   const textures = useShirtSectionTextures("sport", "first");
   const mats = createMaterials(textures, stencil) as Record<
     TextureKey<"sport", "first">,
     THREE.MeshBasicMaterial
   >;
-
+  useFirstAnimation(groupRef, shirtRef, maskRef);
   return (
     <group>
-      <Masking />
-      <group dispose={null}>
+      <Masking ref={maskRef} />
+      <group ref={groupRef} dispose={null}>
         <mesh
+          ref={shirtRef}
           geometry={nodes.Shirt_Sport.geometry}
           material={mats.shirt}
           position={[0, 0.7, 0]}

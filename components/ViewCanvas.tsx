@@ -18,8 +18,8 @@ const ViewCanvas = () => {
       gl={{ stencil: true }}
     >
       <View.Port />
-      <OrbitControls />
-      {/* <Rig /> */}
+      {/* <OrbitControls /> */}
+      <Rig />
     </Canvas>
   );
 };
