@@ -1,8 +1,10 @@
 import * as THREE from "three";
-import { useGLTF } from "@react-three/drei";
+import { Mask, useGLTF, useMask } from "@react-three/drei";
 import { useShirtSectionTextures } from "@/lib/useTextures";
 import { createMaterials } from "@/lib/material";
 import { TextureKey } from "@/lib/textures";
+import { useThree } from "@react-three/fiber";
+import Masking from "./Masking";
 
 type GLTFResult = {
   nodes: {
@@ -14,27 +16,32 @@ export function FirstSportModel() {
     "/models/sport/SportStudio.glb"
   ) as unknown as GLTFResult;
 
+  const { width, height } = useThree((state) => state.viewport);
+  const stencil = useMask(1);
   const textures = useShirtSectionTextures("sport", "first");
-  const mats = createMaterials(textures) as Record<
+  const mats = createMaterials(textures, stencil) as Record<
     TextureKey<"sport", "first">,
     THREE.MeshBasicMaterial
   >;
 
   return (
-    <group dispose={null}>
-      <mesh
-        geometry={nodes.Shirt_Sport.geometry}
-        material={mats.shirt}
-        position={[0, 0.7, 0]}
-        rotation={[Math.PI, 0, Math.PI]}
-      />
-      <mesh geometry={nodes.Environment.geometry} material={mats.env} />
-      <mesh geometry={nodes.Ramp.geometry} material={mats.ramp} />
-      <mesh
-        geometry={nodes.SakteBoard.geometry}
-        material={mats.skateboard}
-        position={[0, -0.012, 0]}
-      />
+    <group>
+      <Masking />
+      <group dispose={null}>
+        <mesh
+          geometry={nodes.Shirt_Sport.geometry}
+          material={mats.shirt}
+          position={[0, 0.7, 0]}
+          rotation={[Math.PI, 0, Math.PI]}
+        />
+        <mesh geometry={nodes.Environment.geometry} material={mats.env} />
+        <mesh geometry={nodes.Ramp.geometry} material={mats.ramp} />
+        <mesh
+          geometry={nodes.SakteBoard.geometry}
+          material={mats.skateboard}
+          position={[0, -0.012, 0]}
+        />
+      </group>
     </group>
   );
 }

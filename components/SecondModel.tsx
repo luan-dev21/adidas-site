@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import { useGLTF } from "@react-three/drei";
+import { useGLTF, useMask } from "@react-three/drei";
 import { ShirtType, TextureKey } from "@/lib/textures";
 import { useShirtSectionTextures } from "@/lib/useTextures";
 import { createMaterials } from "@/lib/material";
@@ -18,9 +18,10 @@ export function SecondModel({ shirtType }: { shirtType: ShirtType }) {
   const { nodes } = useGLTF(
     "/models/ShirtScrolling.glb"
   ) as unknown as GLTFResult;
+  const stencil = useMask(1, true);
   const isMobile = useMediaQuery({ maxWidth: 768 });
   const textures = useShirtSectionTextures(shirtType, "second");
-  const mats = createMaterials(textures) as Record<
+  const mats = createMaterials(textures, stencil) as Record<
     TextureKey<typeof shirtType, "second">,
     THREE.MeshBasicMaterial
   >;
@@ -35,11 +36,13 @@ export function SecondModel({ shirtType }: { shirtType: ShirtType }) {
     color: getTextColor(),
     transparent: true,
     opacity: 1,
+    ...stencil,
   });
   const marqueeMaterial = new THREE.MeshBasicMaterial({
     color: getTextColor(),
     transparent: true,
     opacity: 1,
+    ...stencil,
   });
   const TOP_BOTTOM_TEXT_WIDTH = 5.7;
   const MIDDLE_TEXT_WIDTH = 6.2;

@@ -21,7 +21,7 @@ const Scene = ({ shirtType }: Props) => {
           {shirtType === "sport" && <FirstSportModel />}
         </View>
       </section>
-      <section id="second-section" className="h-screen">
+      <section id="second-section" className="absolute inset-0 -z-10 h-screen">
         <View className="w-dvw h-dvh">
           <SecondModel shirtType={shirtType} />
         </View>
