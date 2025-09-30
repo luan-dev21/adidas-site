@@ -1,7 +1,7 @@
 "use client";
 import { Suspense, useEffect, useState } from "react";
 import { Canvas } from "@react-three/fiber";
-import { OrbitControls, View } from "@react-three/drei";
+import { View } from "@react-three/drei";
 import Rig from "./Rig";
 import LoadingSkeleton from "./LoadingSkeleton";
 import { patchThreeLoadingManager } from "@/lib/patchThreeLoadingManager";

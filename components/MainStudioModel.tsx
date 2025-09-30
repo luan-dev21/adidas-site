@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import * as THREE from "three";
 import { useGLTF } from "@react-three/drei";
@@ -31,32 +31,35 @@ export function MainStudioModel({
     THREE.MeshBasicMaterial
   >;
 
-  const shirts = [
-    {
-      position: [0.65, 0.7, -0.45] as [number, number, number],
-      rotation: [0, Math.PI / 9, 0] as [number, number, number],
-      geometry: nodes.Shirt_White.geometry,
-      material: mats.whiteShirt,
-      hoverdMat: mats.whiteStudio,
-      slug: "white",
-    },
-    {
-      position: [0, 0.7, 0] as [number, number, number],
-      rotation: [0, 0, 0] as [number, number, number],
-      geometry: nodes.Shirt_Sport.geometry,
-      material: mats.sportShirt,
-      hoverdMat: mats.redStudio,
-      slug: "sport",
-    },
-    {
-      position: [-0.65, 0.7, -0.45] as [number, number, number],
-      rotation: [0, -Math.PI / 9, 0] as [number, number, number],
-      geometry: nodes.Shirt_Gray.geometry,
-      material: mats.grayShirt,
-      hoverdMat: mats.grayStudio,
-      slug: "gray",
-    },
-  ];
+  const shirts = useMemo(
+    () => [
+      {
+        position: [0.65, 0.7, -0.45] as [number, number, number],
+        rotation: [0, Math.PI / 9, 0] as [number, number, number],
+        geometry: nodes.Shirt_White.geometry,
+        material: mats.whiteShirt,
+        hoverdMat: mats.whiteStudio,
+        slug: "white",
+      },
+      {
+        position: [0, 0.7, 0] as [number, number, number],
+        rotation: [0, 0, 0] as [number, number, number],
+        geometry: nodes.Shirt_Sport.geometry,
+        material: mats.sportShirt,
+        hoverdMat: mats.redStudio,
+        slug: "sport",
+      },
+      {
+        position: [-0.65, 0.7, -0.45] as [number, number, number],
+        rotation: [0, -Math.PI / 9, 0] as [number, number, number],
+        geometry: nodes.Shirt_Gray.geometry,
+        material: mats.grayShirt,
+        hoverdMat: mats.grayStudio,
+        slug: "gray",
+      },
+    ],
+    [nodes, mats]
+  );
   const [envMaterial, setEnvMaterial] = useState<THREE.MeshBasicMaterial>(
     mats.defaultStudio
   );
@@ -67,7 +70,7 @@ export function MainStudioModel({
     shirts.forEach((shirt) => {
       router.prefetch(`/shirts/${shirt.slug}`);
     });
-  }, [router]);
+  }, [router, shirts]);
   useGSAP(() => {
     if (!meshRefs.current) return;
     meshRefs.current.forEach((mesh, i) => {
