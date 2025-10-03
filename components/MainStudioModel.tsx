@@ -63,6 +63,7 @@ export function MainStudioModel({
   const [envMaterial, setEnvMaterial] = useState<THREE.MeshBasicMaterial>(
     mats.defaultStudio
   );
+  const groupRef = useRef<THREE.Group>(null);
   const meshRefs = useRef<(THREE.Mesh | null)[]>([]);
   const tlRefs = useRef<GSAPTimeline[]>([]);
   const router = useRouter();
@@ -71,6 +72,36 @@ export function MainStudioModel({
       router.prefetch(`/shirts/${shirt.slug}`);
     });
   }, [router, shirts]);
+
+  useGSAP(() => {
+    const hasAnimationRun = sessionStorage.getItem("mainStudioAnimationRan");
+    if (!groupRef.current || hasAnimationRun) return;
+    gsap.from(groupRef.current.position, {
+      y: -0.15,
+      z: 2,
+      duration: 4,
+      ease: "power4.inOut",
+      onComplete: () => {
+        sessionStorage.setItem("mainStudioAnimationRan", "true");
+      },
+    });
+    meshRefs.current.forEach((shirt, i) => {
+      if (!shirt) return;
+      gsap.from(shirt.position, {
+        x: shirt.position.x * 2,
+        delay: 1,
+        duration: 3,
+        ease: "power2.out",
+      });
+      gsap.from(shirt.rotation, {
+        y: shirt.rotation.y * 4,
+        delay: 1,
+        duration: 3,
+        ease: "power2.out",
+      });
+    });
+  });
+
   useGSAP(() => {
     if (!meshRefs.current) return;
     meshRefs.current.forEach((mesh, i) => {
@@ -134,7 +165,7 @@ export function MainStudioModel({
     router.push(`/shirts/${slug}`);
   }
   return (
-    <group dispose={null} scale={scale}>
+    <group ref={groupRef} dispose={null} scale={scale}>
       <mesh
         castShadow
         receiveShadow
@@ -166,5 +197,3 @@ export function MainStudioModel({
     </group>
   );
 }
-
-useGLTF.preload("/models/main/MainStudio.glb");

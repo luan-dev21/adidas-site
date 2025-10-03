@@ -52,4 +52,4 @@ export function FirstSportModel() {
   );
 }
 
-useGLTF.preload("/models/sport/SportStudio.glb");
+

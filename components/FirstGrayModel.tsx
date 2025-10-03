@@ -46,4 +46,4 @@ export function FirstGrayModel() {
   );
 }
 
-useGLTF.preload("/models/gray/GrayStudio.glb");
+
