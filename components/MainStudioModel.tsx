@@ -163,6 +163,7 @@ export function MainStudioModel({
   }
   function handleClick(slug: string) {
     router.push(`/shirts/${slug}`);
+    document.body.style.cursor = "auto";
   }
   return (
     <group ref={groupRef} dispose={null} scale={scale}>
